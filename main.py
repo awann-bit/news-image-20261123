@@ -5,7 +5,8 @@ The entry image is a newspaper-style front page, "THE WORLD IN ONE DAY",
 with 35 real stories from 23 November 2026. This program simply writes
 that image, stored beside it as entry.png, to the output location.
 It uses only the standard library and no network. Running it twice
-writes exactly the same bytes both times.
+writes exactly the same bytes both times. If the image is missing,
+it exits with a clear error instead of a traceback.
 """
 
 import os
@@ -20,5 +21,11 @@ OUT_DIR = os.environ.get("MAKEFUN_OUTPUT_DIR", "/output")
 DST = os.path.join(OUT_DIR, "entry.png")
 
 os.makedirs(OUT_DIR, exist_ok=True)
+
+# Fail fast with a clear message if the image is missing, instead of
+# crashing with a traceback from the copy below.
+if not os.path.isfile(SRC):
+    raise SystemExit("entry image not found: %s" % SRC)
+
 shutil.copyfile(SRC, DST)
 print("wrote %s %d bytes" % (DST, os.path.getsize(DST)))
