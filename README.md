@@ -15,9 +15,15 @@ sell-off rattling world markets, Anthropic raising $93.5bn in its Nasdaq
 IPO, Britain's PM defending the EU deal, and a "The day in numbers" panel
 drawn from the same stories.
 
-The program is deterministic and uses no network: it copies the image
-stored beside it as `entry.png` to `/output/entry.png`. Running it
-twice writes exactly the same bytes.
+Every run produces the same output with no network access: the program
+simply takes the `entry.png` file sitting next to it and places a copy
+at `/output/entry.png`. Run it once or a hundred times and the bytes
+come out identical.
+
+If `entry.png` is missing, the program does not crash with a traceback:
+it checks for the file first and exits with a clear "entry image not found"
+error naming the missing path. That way a failed run says plainly what
+went wrong instead of dumping a stack trace.
 
 ## Run it
 
